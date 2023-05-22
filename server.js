@@ -9,6 +9,5 @@ mongoose
         app.listen(3000);
     })
     .catch(e => {
-        console.log('ERROR: ', e.message);
         process.exit(1);
     });
