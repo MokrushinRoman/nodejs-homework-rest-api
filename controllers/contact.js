@@ -1,5 +1,5 @@
 const { Contact } = require('../models/contact');
-const { validateContact } = require('../helpers');
+const { validateId } = require('../helpers');
 const ctrlWrapper = require('../decorators/ctrlWrapper');
 
 const unwantedValues = '-updatedAt -createdAt';
@@ -12,7 +12,7 @@ const getAllContacts = async (_, res) => {
 const getContactById = async (req, res) => {
     const { contactId } = req.params;
     const searchedContact = await Contact.findById(contactId, unwantedValues);
-    validateContact(searchedContact);
+    validateId(searchedContact);
     res.json(searchedContact);
 };
 
@@ -28,7 +28,7 @@ const updateContact = async (req, res) => {
         req.body,
         { new: true }
     );
-    validateContact(updatedContact);
+    validateId(updatedContact);
     res.json(updatedContact);
 };
 
@@ -39,14 +39,14 @@ const updateFavorite = async (req, res) => {
         req.body,
         { new: true }
     );
-    validateContact(updatedContact);
+    validateId(updatedContact);
     res.json(updatedContact);
 };
 
 const deleteContact = async (req, res) => {
     const { contactId } = req.params;
     const deletedContact = await Contact.findByIdAndRemove(contactId);
-    validateContact(deletedContact);
+    validateId(deletedContact);
     res.status(204).send();
 };
 

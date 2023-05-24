@@ -12,7 +12,7 @@ const {
     updateContact,
     deleteContact,
     updateFavorite,
-} = require('../../controllers/contacts-controller');
+} = require('../../controllers/contact');
 
 router.get('/', getAllContacts);
 router.get('/:contactId', isValidId, getContactById);

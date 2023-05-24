@@ -1,9 +1,11 @@
 const HttpError = require('./HttpError');
-const validateContact = require('./validateId');
+const validateId = require('./validateId');
 const handleMongooseError = require('./handleMongooseError');
+const validateUser = require('./validateUser');
 
 module.exports = {
     HttpError,
-    validateContact,
+    validateId,
+    validateUser,
     handleMongooseError,
 };
