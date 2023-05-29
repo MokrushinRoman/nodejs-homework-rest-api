@@ -29,6 +29,11 @@ const contactSchema = new Schema(
             default: 'mobile',
             enum: typesList,
         },
+        owner: {
+            type: Schema.Types.ObjectId,
+            ref: 'user',
+            required: true,
+        },
     },
     { versionKey: false, timestamps: true }
 );
