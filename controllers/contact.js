@@ -1,23 +1,30 @@
 const { Contact } = require('../models/contact');
-const { validateContact } = require('../helpers');
+const { validateById } = require('../helpers');
 const ctrlWrapper = require('../decorators/ctrlWrapper');
 
 const unwantedValues = '-updatedAt -createdAt';
 
-const getAllContacts = async (_, res) => {
-    const contacts = await Contact.find({}, unwantedValues);
+const getAllContacts = async (req, res) => {
+    const { _id: owner } = req.user;
+    const { page = 1, limit = 10 } = req.query;
+    const skip = (page - 1) * limit;
+    const contacts = await Contact.find({ owner }, unwantedValues, {
+        skip,
+        limit,
+    }).populate('owner', 'name email');
     res.json(contacts);
 };
 
 const getContactById = async (req, res) => {
     const { contactId } = req.params;
     const searchedContact = await Contact.findById(contactId, unwantedValues);
-    validateContact(searchedContact);
+    validateById(searchedContact);
     res.json(searchedContact);
 };
 
 const addContact = async (req, res) => {
-    const newContact = await Contact.create(req.body);
+    const { _id: owner } = req.user;
+    const newContact = await Contact.create({ ...req.body, owner });
     res.status(201).json(newContact);
 };
 
@@ -26,9 +33,11 @@ const updateContact = async (req, res) => {
     const updatedContact = await Contact.findByIdAndUpdate(
         contactId,
         req.body,
-        { new: true }
+        {
+            new: true,
+        }
     );
-    validateContact(updatedContact);
+    validateById(updatedContact);
     res.json(updatedContact);
 };
 
@@ -39,14 +48,14 @@ const updateFavorite = async (req, res) => {
         req.body,
         { new: true }
     );
-    validateContact(updatedContact);
+    validateById(updatedContact);
     res.json(updatedContact);
 };
 
 const deleteContact = async (req, res) => {
     const { contactId } = req.params;
     const deletedContact = await Contact.findByIdAndRemove(contactId);
-    validateContact(deletedContact);
+    validateById(deletedContact);
     res.status(204).send();
 };
 

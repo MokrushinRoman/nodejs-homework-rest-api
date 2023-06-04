@@ -1,9 +1,15 @@
 const HttpError = require('./HttpError');
-const validateContact = require('./validateId');
+const validateById = require('./validateById');
 const handleMongooseError = require('./handleMongooseError');
+const validateUsersCredentials = require('./validateUsersCredentials');
+const isRegistredUser = require('./isRegistredUser');
+const generateJWT = require('./generateJWT');
 
 module.exports = {
     HttpError,
-    validateContact,
+    validateById,
+    validateUsersCredentials,
     handleMongooseError,
+    isRegistredUser,
+    generateJWT,
 };
